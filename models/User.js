@@ -13,7 +13,12 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-
+    foods: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Cuisine'
+        }
+    ]
       
 })
 

@@ -57,4 +57,19 @@ export const RegisterUserController = async(req, res, next)=>{
             console.log(error)
         }
         }
-
+        export const GetUsersController = async (req, res) => {
+            try {
+                const users = await User.find({})
+                if (!users) {
+                    res.json({ message: "Something went wrong :(" })
+                    return
+                }
+                res.json({
+                    status: 'Success',
+                    data: users
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        
