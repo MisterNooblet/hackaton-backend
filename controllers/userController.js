@@ -56,9 +56,11 @@ export const UserLoginController = async (req, res, next) => {
             id: userFound._id
         })
     } catch (error) {
+
         next(new AppError("something went wrong"))
     }
 }
+
 export const GetUsersController = async (req, res, next) => {
     try {
         const users = await User.find({})
