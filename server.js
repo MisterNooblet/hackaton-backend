@@ -9,7 +9,7 @@ import globalErrHandler from "./middlewares/globalErrHandler.js";
 import updateDB from "./utils/puppeteer.js";
 dotenv.config({ path: "./config/config.env" });
 
-await connectDB()
+connectDB()
 //middlewares
 const app = express()
 app.use(express.json())
