@@ -48,27 +48,19 @@ export const UserLoginController = async (req, res) => {
         if (!passwordDoesMatch) {
             res.json({ message: "Invalid Login Credentials" })
         }
-        res.json({
-            status: 'Login route',
-            fullname: userFound.fullname,
-            id: userFound._id
-        })
-    } catch (error) {
-        console.log(error)
-    }
-}
-export const GetUsersController = async (req, res) => {
-    try {
-        const users = await User.find({})
-        if (!users) {
-            res.json({ message: "Something went wrong :(" })
-            return
+
+        export const GetUsersController = async (req, res) => {
+            try {
+                const users = await User.find({})
+                if (!users) {
+                    res.json({ message: "Something went wrong :(" })
+                    return
+                }
+                res.json({
+                    status: 'Success',
+                    data: users
+                })
+            } catch (error) {
+                console.log(error)
+            }
         }
-        res.json({
-            status: 'Success',
-            data: users
-        })
-    } catch (error) {
-        console.log(error)
-    }
-}
