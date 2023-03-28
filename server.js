@@ -9,13 +9,13 @@ import globalErrHandler from "./middlewares/globalErrHandler.js";
 import updateDB from "./utils/puppeteer.js";
 dotenv.config({ path: "./config/config.env" });
 
+await connectDB()
 //middlewares
 const app = express()
 app.use(express.json())
 app.use(cors())
 app.use('/api/v1/user', UserRoute)
 app.use('/api/v1/countries', countryRoutes)
-await connectDB()
 
 updateDB()
 
