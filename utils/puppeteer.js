@@ -1,4 +1,6 @@
 import puppeteer from "puppeteer";
+import Country from "../models/Country.js";
+import Cuisine from "../models/Cuisine.js";
 
 const scrapeData = async () => {
 
@@ -75,10 +77,33 @@ const scrapeData = async () => {
 
 const fixDishText = (string) => {
   if (string) {
-    let result = string.split(/,\s*/).map(s => s.replace(/\[[^\]]*\]\s*/g, ''))
+    let result = string.split(/,\s*/).map(s => s.replace(/\[[^\]]*\]\s*/g, '').trim())
     return result
   }
   return null
 }
 
-export default scrapeData;
+const updateDB = async () => {
+  const data = await scrapeData()
+  console.log('scraping and uploading to mongo please hold on....');
+  await Country.deleteMany()
+  await Cuisine.deleteMany()
+  for (const el of data) {
+    let country = new Country({
+      name: el.name,
+      tip: el.tip,
+      cuisines: []
+    })
+    for (const dish of el.cuisines) {
+      let food = new Cuisine({
+        name: dish
+      })
+      food = await food.save()
+      country.cuisines.push(food._id)
+    }
+    await country.save()
+  }
+  console.log('done! all data scraped and pushed to mongo');
+}
+
+export default updateDB;

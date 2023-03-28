@@ -17,6 +17,6 @@ const CountrySchema = new mongoose.Schema({
     ],
 })
 
-const Country = mongoose.model("Country", CuisineSchema)
+const Country = mongoose.model("Country", CountrySchema)
 
 export default Country
