@@ -1,5 +1,7 @@
 import User from '../models/User.js'
 import bcrypt from 'bcrypt'
+import { Error } from 'mongoose'
+import { AppError, appErr } from '../utils/AppErrors.js'
 
 export const RegisterUserController = async (req, res, next) => {
     const { fullname, email, password } = req.body
@@ -7,14 +9,14 @@ export const RegisterUserController = async (req, res, next) => {
         //check for dublicate users
         const userFound = await User.findOne({ email })
         if (userFound) {
-            next(new Error("User Already exist"))
+            next(appErr("User Already exist", 400))
             return
         }
         //check if fields are empty
-        if (!email || !password || !fullname) {
-            res.json({ message: "All Feilds Are Required" })
-            return
-        }
+        // if (!email || !password || !fullname) {
+        //     res.json({ message: "All Feilds Are Required" })
+        //     return
+        // }
         //hash password
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
@@ -32,21 +34,21 @@ export const RegisterUserController = async (req, res, next) => {
             id: user._id
         })
     } catch (error) {
-        console.log('error')
+        next(new Error(error))
     }
 }
 
-export const UserLoginController = async (req, res) => {
+export const UserLoginController = async (req, res, next) => {
     try {
         const { email, password } = req.body
         const userFound = await User.findOne({ email })
         if (!userFound) {
-            res.json({ message: "Invalid Login Credentials" })
+            next(new AppError("Invalid Login Credentials", 400))
             return
         }
         const passwordDoesMatch = await bcrypt.compare(password, userFound.password)
         if (!passwordDoesMatch) {
-            res.json({ message: "Invalid Login Credentials" })
+            next(new AppError("Invalid Login Credentials", 400))
         }
         res.json({
             status: 'Login route',
@@ -54,14 +56,16 @@ export const UserLoginController = async (req, res) => {
             id: userFound._id
         })
     } catch (error) {
-        console.log(error)
+
+        next(new AppError("something went wrong"))
     }
 }
-export const GetUsersController = async (req, res) => {
+
+export const GetUsersController = async (req, res, next) => {
     try {
         const users = await User.find({})
         if (!users) {
-            res.json({ message: "Something went wrong :(" })
+            next(new AppError("Something went wrong :(", 404))
             return
         }
         res.json({
@@ -69,6 +73,6 @@ export const GetUsersController = async (req, res) => {
             data: users
         })
     } catch (error) {
-        console.log(error)
+        next(new Error(error))
     }
 }
