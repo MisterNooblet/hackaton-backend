@@ -4,12 +4,16 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import run from "./utils/puppeteer.js";
 import connectDB from "./config/connectDB.js";
-dotenv.config({ path: "./config/config.env" });
+import UserRoute from "./routes/userRoutes.js";
+import globalErrHandler from "./middlewares/globalErrHandler.js";
+ dotenv.config({ path: "./config/config.env" });
+
 //middlewares
-const app = express();
-app.use(express.json());
-app.use(cors());
-connectDB();
+const app = express()
+app.use(express.json())
+app.use(cors())
+app.use('/api/v1/user', UserRoute)
+connectDB()
 
 if (process.env.NODE_ENV !== `production`) {
   app.use(morgan(`dev`));
@@ -25,10 +29,10 @@ app.get("/", (req, res) =>
 
 //error handlers
 
+app.use(globalErrHandler)
+
 //Server Listen
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-run();
