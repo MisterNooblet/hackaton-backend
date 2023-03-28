@@ -3,11 +3,15 @@ import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import connectDB from "./config/connectDB.js";
+import UserRoute from "./routes/userRoutes.js";
+import globalErrHandler from "./middlewares/globalErrHandler.js";
  dotenv.config({ path: "./config/config.env" });
+
 //middlewares
 const app = express()
 app.use(express.json())
 app.use(cors())
+app.use('/api/v1/user', UserRoute)
 connectDB()
 
 if (process.env.NODE_ENV !== `production`) {
@@ -24,7 +28,7 @@ if (process.env.NODE_ENV !== `production`) {
 
 
 //error handlers
-
+app.use(globalErrHandler)
 
 
 //Server Listen
