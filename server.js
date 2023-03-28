@@ -9,7 +9,7 @@ import globalErrHandler from "./middlewares/globalErrHandler.js";
 import updateDB from "./utils/puppeteer.js";
 dotenv.config({ path: "./config/config.env" });
 
-connectDB()
+// connectDB()
 //middlewares
 const app = express()
 app.use(express.json())
@@ -18,7 +18,6 @@ app.use('/api/v1/user', UserRoute)
 app.use('/api/v1/countries', countryRoutes)
 
 // setTimeout(() => {  }, 40000)
-updateDB()
 
 if (process.env.NODE_ENV !== `production`) {
   app.use(morgan(`dev`));
@@ -34,8 +33,25 @@ app.get("/", (req, res) =>
 app.use(globalErrHandler)
 
 //Server Listen
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+console.log(process.env.MONGODB_USERNAME);
+const CONNECTION_URL = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.e1bltqc.mongodb.net/?retryWrites=true&w=majority`;
+const PORT = process.env.PORT || 8080;
+mongoose.set("strictQuery", false);
+
+mongoose
+  .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() =>
+    app.listen(PORT, () => console.log(`server running on port : ${PORT}`))
+  )
+  .catch((error) => console.log(error));
+
+
+
+updateDB()
+
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
