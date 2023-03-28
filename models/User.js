@@ -1,17 +1,17 @@
 import mongoose from "mongoose"
 
 const UserSchema = new mongoose.Schema({
-    fullname:{
-        type:String,
+    fullname: {
+        type: String,
         required: true
     },
-    email:{
-        type:String,
-        required:true
+    email: {
+        type: String,
+        required: true
     },
-    password:{
-        type:String,
-        required:true
+    password: {
+        type: String,
+        required: true
     },
     foods: [
         {
@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
             ref: 'Cuisine'
         }
     ]
-      
+
 })
 
 const User = mongoose.model("User", UserSchema)
