@@ -99,7 +99,7 @@ export const StoreFoods = async (req, res, next) => {
 export const GetLeaders = async (req, res, next) => {
     try {
         const users = await User.aggregate([
-            { $addFields: { arrayLength: { $size: "$myArray" } } },
+            { $addFields: { arrayLength: { $size: "$foods" } } },
             { $sort: { arrayLength: -1 } }
         ])
         res.json({
