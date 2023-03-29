@@ -1,4 +1,5 @@
 import express from 'express'
+import { StoreFoods } from '../controllers/userController.js'
 import { GetUsersController, RegisterUserController, UserLoginController } from '../controllers/userController.js'
 const UserRoute = express.Router()
 
@@ -13,7 +14,7 @@ UserRoute.get('/', GetUsersController)
 
 // UserRoute.delete('/:id', DeleteUserController)
 
-// UserRoute.put('/:id', UpdateUserController)
+UserRoute.put('/:id', StoreFoods)
 
 
 export default UserRoute

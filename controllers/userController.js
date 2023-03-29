@@ -76,3 +76,22 @@ export const GetUsersController = async (req, res, next) => {
         next(new Error(error))
     }
 }
+
+
+export const StoreFoods = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.params.id)
+        if (!user) {
+            next(new AppError("Something went wrong :(", 404))
+            return
+        }
+        req.body.cuisines.forEach(cuisine => user.foods.push(cuisine))
+        let result = await user.save()
+        res.json({
+            status: 'Success',
+            data: result
+        })
+    } catch (error) {
+        next(new Error(error))
+    }
+}
