@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 import connectDB from "./config/connectDB.js";
 import UserRoute from "./routes/userRoutes.js";
@@ -37,7 +38,7 @@ app.use(globalErrHandler)
 
 
 console.log(process.env.MONGODB_USERNAME);
-const CONNECTION_URL = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.e1bltqc.mongodb.net/?retryWrites=true&w=majority`;
+const CONNECTION_URL = `mongodb+srv://vipermotomail:QxxZVpwdag2RbfqD@cluster0.e1bltqc.mongodb.net/?retryWrites=true&w=majority`;
 const PORT = process.env.PORT || 8080;
 mongoose.set("strictQuery", false);
 
