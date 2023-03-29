@@ -95,3 +95,18 @@ export const StoreFoods = async (req, res, next) => {
         next(new Error(error))
     }
 }
+
+export const GetLeaders = async (req, res, next) => {
+    try {
+        const users = await User.aggregate([
+            { $addFields: { arrayLength: { $size: "$myArray" } } },
+            { $sort: { arrayLength: -1 } }
+        ])
+        res.json({
+            status: 'success',
+            data: users
+        })
+    } catch (error) {
+
+    }
+}
